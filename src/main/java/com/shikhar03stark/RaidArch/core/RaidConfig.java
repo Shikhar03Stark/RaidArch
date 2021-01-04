@@ -16,39 +16,39 @@ public class RaidConfig {
 		RAID5
 	}
 	
-	private String confFilePath;
-	private String simulationPath;
-	private RaidType archType;
-	private int virtualDrives;
-	private double virtualDiskMemory;
+	private static String confFilePath;
+	private static String simulationPath;
+	private static RaidType archType;
+	private static int virtualDrives;
+	private static double virtualDiskMemory;
 	
 	//Getter and Setter for confFile
 	public String getConfFilePath() {
-		return this.confFilePath;
+		return RaidConfig.confFilePath;
 	}	
 	
 	public void setConfFilePath(String path) {
-		this.confFilePath = path;
+		RaidConfig.confFilePath = path;
 	}
 	
 	//Getter and Setter for simulationPath
 	public String getSimulationPath() {
-		return this.simulationPath;
+		return RaidConfig.simulationPath;
 	}
 	
 	public void setSimulationPath(String path) {
-		this.simulationPath = path;
+		RaidConfig.simulationPath = path;
 	}
 	
 	//Getter and Setter for archType
 	public String getArchType() {
-		return this.archType.toString();
+		return RaidConfig.archType.toString();
 	}
 	
 	public void setArchType(String arch) {
 		for(RaidType r: RaidType.values()) {
 			if(r.toString().equals(arch)) {
-				this.archType = r;
+				RaidConfig.archType = r;
 				break;
 			}
 		}
@@ -57,22 +57,22 @@ public class RaidConfig {
 	
 	//Getter and Setter for virtualDrives
 	public int getVirtualDrives() {
-		return this.virtualDrives;
+		return RaidConfig.virtualDrives;
 	}
 	
 	public void setVirtualDrives(String strDrives) {
 		int drives = Integer.parseInt(strDrives);
 		if(drives <= 0) {
-			this.virtualDrives = 1;
+			RaidConfig.virtualDrives = 1;
 		}
 		else {
-			this.virtualDrives = drives;
+			RaidConfig.virtualDrives = drives;
 		}
 	}
 	
 	//Getter and Setter for virtualDiskMemory
 	public double getVirtualDiskMemory() {
-		return this.virtualDiskMemory;
+		return RaidConfig.virtualDiskMemory;
 	}
 	
 	public void setVirtualDiskMemory(String sizeMB) {
@@ -81,7 +81,7 @@ public class RaidConfig {
 			size = 100;
 		}
 		else {
-			this.virtualDiskMemory = size;
+			RaidConfig.virtualDiskMemory = size;
 		}
 	}
 	
@@ -109,6 +109,10 @@ public class RaidConfig {
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
+	}
+
+	public RaidConfig() {
+		
 	}
 	
 	
