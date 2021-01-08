@@ -1,0 +1,113 @@
+package com.shikhar03stark.RaidArch.raid;
+
+
+import com.shikhar03stark.RaidArch.core.RaidConfig;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import org.w3c.dom.Node;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public interface Raid {
+	
+	//generate parsed document of metafile
+	public static Document getParsedMetaDocument(RaidConfig config){
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = null;
+		try {
+			dBuilder = dbFactory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String metafileDir = config.getSimulationPath()+".metafile";
+		File metafile = new File(metafileDir);
+		Document doc = null;
+		try {
+			doc = dBuilder.parse(metafile);
+		} catch (SAXException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return doc;
+	}
+
+	//check if cache is present
+	public static boolean isCachePresent(RaidConfig config) {
+		try {
+			Document doc = getParsedMetaDocument(config);
+			
+			doc.getDocumentElement().normalize();
+			Element cache = doc.getDocumentElement();
+			
+			if(cache.getElementsByTagName("cache").getLength() > 0) {
+				return true;
+			}
+			
+		}catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		return false;
+	}
+	
+	//check if fileSystem block is present
+	public static boolean isFileSystemPresent(RaidConfig config) {
+		try {
+			Document doc = getParsedMetaDocument(config);
+			doc.getDocumentElement().normalize();
+			
+			Element fileSystem = doc.getDocumentElement();
+			
+			if(fileSystem.getElementsByTagName("filesystem").getLength() > 0) {
+				return true;
+			}
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		return false;
+	}
+	
+	//generate raid specific initial Cache
+	public void genCache();
+	
+	//update cache when CREATE,DELETE files according to RAID
+	public boolean updateCache();
+	
+	//generate FileSystem Object 
+	public void genFileSystem();
+	
+	//update fileSystem when CREATE, DELETE files according to RAID
+	public boolean updateFileSystem();
+	
+	//write data to files according to RAID
+	public void writeToRaid(String path);
+	
+	//Delete file/data according to RAID
+	public void removeFromRaid(String filename);
+	
+	//Read file/data according to RAID
+	public void readFromRaid(String filename, String outputPath);
+	
+	//get Human friendly Cache information.
+	public void getRaidInfo();
+	
+	//Determine if FileSystem is inconsistent and can be recovered
+	public boolean isStateRecoverable();
+	
+	//RAID specific recovery strategy
+	public void recoverFileSystem();
+	
+	
+}
