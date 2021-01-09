@@ -4,6 +4,12 @@ package com.shikhar03stark.RaidArch.raid;
 import com.shikhar03stark.RaidArch.core.RaidConfig;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -40,6 +46,29 @@ public interface Raid {
 		}
 		
 		return doc;
+	}
+	
+	//Transform DOM to XML
+	public static boolean transformToXML(Document doc, String xmlPath) {
+		TransformerFactory tFactory = TransformerFactory.newInstance();
+		Transformer transformer = null;
+		try {
+			transformer = tFactory.newTransformer();
+		} catch (TransformerConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DOMSource domSource = new DOMSource(doc);
+		StreamResult sResult = new StreamResult(new File(xmlPath));
+		
+		try {
+			transformer.transform(domSource, sResult);
+			return true;
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	//check if cache is present
