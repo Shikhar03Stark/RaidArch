@@ -13,16 +13,12 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import org.w3c.dom.Node;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public interface Raid {
 	
@@ -112,13 +108,13 @@ public interface Raid {
 	public void genCache();
 	
 	//update cache when CREATE,DELETE files according to RAID
-	public boolean updateCache();
+	public boolean updateCache(Object filedata);
 	
 	//generate FileSystem Object 
 	public void genFileSystem();
 	
 	//update fileSystem when CREATE, DELETE files according to RAID
-	public boolean updateFileSystem();
+	public boolean updateFileSystem(Object filedata);
 	
 	//write data to files according to RAID
 	public void writeToRaid(String path);

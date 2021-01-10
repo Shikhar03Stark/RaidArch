@@ -12,5 +12,6 @@ public class App
         Common.setupSimDir(config);
         Raid0 raidInstance = new Raid0(config);
         raidInstance.genCache();
+        raidInstance.writeToRaid("/home/shikhar/Downloads/REQUIZ-ques.pdf");
     }
 }
